@@ -1,23 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace OefeningenLogo
 {
     public class GetalSetDefinitie
     {
         private readonly string _tokenstring;
-        private readonly List<GetalDefinitie> _getallen;
+        private readonly List<GetalDefinitie> _getalDefinities;
 
-        public GetalSetDefinitie(IEnumerable<GetalDefinitie> getallen, string tokenstring)
+        public GetalSetDefinitie(string tokenstring)
         {
-            _getallen = getallen.ToList();
+            _getalDefinities = new List<GetalDefinitie>();
             _tokenstring = tokenstring;
         }
 
-        public void AddGetal(GetalDefinitie getal)
+        public GetalDefinitie GetaldefinitieToevoegen(string getalDefinitie)
         {
-            _getallen.Add(getal);
+            var getalComponenten = getalDefinitie.Split('|');
+
+            var name = getalComponenten[0];
+
+            if (getalDefinitie.Contains("result"))
+                return new GetalDefinitie(name, true);
+
+            int minValue;
+            int maxValue;
+            uint cijfersNaDeKomma;
+
+            if (int.TryParse(getalComponenten[1], out minValue)
+                && int.TryParse(getalComponenten[2], out maxValue)
+                && uint.TryParse(getalComponenten[3], out cijfersNaDeKomma))
+            {
+                return string.IsNullOrWhiteSpace(name)
+                    ? GetaldefinitieToevoegen(minValue, maxValue, cijfersNaDeKomma)
+                    : GetaldefinitieToevoegen(name, minValue, maxValue, cijfersNaDeKomma);
+            }
+
+            return null;
+        }
+
+        public GetalDefinitie GetaldefinitieToevoegen(int minValue, int maxValue, uint cijfersNaDeKomma)
+        {
+            var g = new GetalDefinitie("{" + (_getalDefinities.Count).ToString("0") + "}", minValue, maxValue, cijfersNaDeKomma);
+            _getalDefinities.Add(g);
+            return g;
+        }
+
+        private GetalDefinitie GetaldefinitieToevoegen(string name, int minValue, int maxValue, uint cijfersNaDeKomma)
+        {
+            var g = new GetalDefinitie(name, minValue, maxValue, cijfersNaDeKomma);
+            _getalDefinities.Add(g);
+            return g;
+        }
+
+        public void GetaldefinitieToevoegen(GetalDefinitie getal)
+        {
+            _getalDefinities.Add(getal);
+        }
+
+        public IEnumerable<GetalDefinitie> GetalDefinities
+        {
+            get { return _getalDefinities; }
+        }
+
+        public string TokenString
+        {
+            get { return _tokenstring; }
         }
 
         public GetalSet Generate(Random random)
@@ -25,7 +73,7 @@ namespace OefeningenLogo
             var getalSet = new GetalSet();
             var code = _tokenstring;
 
-            foreach (var getalDefinitie in _getallen)
+            foreach (var getalDefinitie in _getalDefinities)
             {
                 if (getalDefinitie.IsResult)
                     continue;
@@ -40,26 +88,6 @@ namespace OefeningenLogo
             getalSet.AddGetal(result.Value);
 
             return getalSet;
-        }
-    }
-
-    public class GetalSet
-    {
-        private readonly List<decimal> _getallen;
-
-        public GetalSet()
-        {
-            _getallen = new List<decimal>();
-        }
-
-        public void AddGetal(decimal getal)
-        {
-            _getallen.Add(getal);
-        }
-
-        public object[] GetGetallen()
-        {
-            return _getallen.Select(g => (object)g).ToArray();
         }
     }
 }

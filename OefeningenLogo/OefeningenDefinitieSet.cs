@@ -4,23 +4,25 @@ using System.Linq;
 
 namespace OefeningenLogo
 {
-    public class OefeningenDefinitieSet
+    public interface IOefeningenDefinitieSet
+    {
+        List<string> GetOefeningen(int aantal);
+    }
+
+    public class OefeningenDefinitieSet : IOefeningenDefinitieSet
     {
         private readonly Random _random = new Random();
         private GetalSetDefinitie _getalSetDefinitie;
-        private readonly List<GetalDefinitie> _getalDefinities;
         private List<string> _oefeningen;
 
         public OefeningenDefinitieSet()
         {
-            _getalDefinities = new List<GetalDefinitie>();
             _getalSetDefinitie = null;
             _oefeningen = new List<string>();
         }
 
-        public OefeningenDefinitieSet(List<GetalDefinitie> getalDefinities, List<string> oefeningen, GetalSetDefinitie getalsetDef = null)
+        public OefeningenDefinitieSet(List<string> oefeningen, GetalSetDefinitie getalsetDef)
         {
-            _getalDefinities = getalDefinities;
             _getalSetDefinitie = getalsetDef;
             _oefeningen = oefeningen;
         }
@@ -32,7 +34,12 @@ namespace OefeningenLogo
 
         public IEnumerable<GetalDefinitie> GetalDefinities
         {
-            get { return _getalDefinities.ToList(); }
+            get { return _getalSetDefinitie.GetalDefinities; }
+        }
+
+        public GetalSetDefinitie GetalSetDefinitie
+        {
+            get { return _getalSetDefinitie; }
         }
 
         public void SetOefeningen(List<string> oefeningen)
@@ -59,62 +66,22 @@ namespace OefeningenLogo
 
         public GetalDefinitie GetaldefinitieToevoegen(string getalDefinitie)
         {
-            var getalComponenten = getalDefinitie.Split('|');
-
-            var name = getalComponenten[0];
-
-            int minValue;
-            int maxValue;
-            uint cijfersNaDeKomma;
-
-            if (int.TryParse(getalComponenten[1], out minValue)
-                && int.TryParse(getalComponenten[2], out maxValue)
-                && uint.TryParse(getalComponenten[3], out cijfersNaDeKomma))
-            {
-                return string.IsNullOrWhiteSpace(name)
-                    ? GetaldefinitieToevoegen(minValue, maxValue, cijfersNaDeKomma)
-                    : GetaldefinitieToevoegen(name, minValue, maxValue, cijfersNaDeKomma);
-            }
-
-            return null;
-        }
-
-        public GetalDefinitie GetaldefinitieToevoegen(int minValue, int maxValue, uint cijfersNaDeKomma)
-        {
-            var g = new GetalDefinitie("{" + (_getalDefinities.Count).ToString("0") + "}", minValue, maxValue, cijfersNaDeKomma);
-            _getalDefinities.Add(g);
-            if (_getalSetDefinitie != null)
-                _getalSetDefinitie.AddGetal(g);
-            return g;
-        }
-
-        private GetalDefinitie GetaldefinitieToevoegen(string name, int minValue, int maxValue, uint cijfersNaDeKomma)
-        {
-            var g = new GetalDefinitie(name, minValue, maxValue, cijfersNaDeKomma);
-            _getalDefinities.Add(g);
-            if (_getalSetDefinitie != null)
-                _getalSetDefinitie.AddGetal(g);
-            return g;
+            return _getalSetDefinitie.GetaldefinitieToevoegen(getalDefinitie);
         }
 
         private string GetOefening()
         {
             var oefening = _oefeningen[_random.Next(0, _oefeningen.Count)];
 
-            var getallen = _getalDefinities
-                .Select(getalDefinitie => (object)getalDefinitie.GetGetal(_random))
-                .ToArray();
-
-            //TODO bovenstaande in comment en onderstaande uit comment om met getalsets te werken
-            //var getalset = _getalSetDefinitie.Generate(_random);
-            //var getallen = getalset.GetGetallen();
+            var getalset = _getalSetDefinitie.Generate(_random);
+            var getallen = getalset.GetGetallen();
 
             return string.Format(oefening, getallen);
         }
 
         public void GetalSetInstellen(string line)
         {
-            _getalSetDefinitie = new GetalSetDefinitie(_getalDefinities, line);
+            _getalSetDefinitie = new GetalSetDefinitie(line);
         }
     }
 }

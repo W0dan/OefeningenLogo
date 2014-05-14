@@ -6,15 +6,20 @@ using PdfCraft.Fonts;
 
 namespace OefeningenLogo
 {
-    public class PdfGenerator
+    public class PdfGenerator : IGeneratePdfs
     {
-        private readonly Document _doc;
-        private readonly Page _page;
-        private readonly TextBox _text;
-        private readonly DateTime _datum;
-        private string _pdfPath;
+        private Document _doc;
+        private Page _page;
+        private TextBox _text;
+        private DateTime _datum;
+        private readonly string _pdfPath;
 
-        public PdfGenerator(DateTime datum, string pdfPath)
+        public PdfGenerator(string pdfPath)
+        {
+            _pdfPath = pdfPath;
+        }
+
+        public void InitializePage(DateTime datum)
         {
             _doc = new Document();
             _page = _doc.AddPage();
@@ -23,7 +28,6 @@ namespace OefeningenLogo
             headertext.Position = new Point(430, 20);
             headertext.SetFont(new FontProperties("Helvetica", 10));
             _datum = datum;
-            _pdfPath = pdfPath;
             headertext.AddText(_datum.ToString("dd MMMM yyyy"));
             _page.AddTextBox(headertext);
 
@@ -44,14 +48,13 @@ namespace OefeningenLogo
 
         public void Write()
         {
-
             _page.AddTextBox(_text);
 
             var pdf = _doc.Generate();
 
             Directory.CreateDirectory(_pdfPath);
 
-            using (var fs = File.Open(_pdfPath + @"\oefeningen_"+_datum.ToString("yyyyMMdd")+".pdf", FileMode.Create, FileAccess.Write))
+            using (var fs = File.Open(_pdfPath + @"\oefeningen_" + _datum.ToString("yyyyMMdd") + ".pdf", FileMode.Create, FileAccess.Write))
             {
                 fs.Write(pdf, 0, pdf.Length);
             }

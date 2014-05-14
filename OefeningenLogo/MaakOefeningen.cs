@@ -8,11 +8,8 @@ namespace OefeningenLogo
 {
     public partial class MaakOefeningen : Form
     {
-        private OefeningenGenerator _oefeningenGenerator;
-
         private int _andereOefeningenCounter = 1;
-        private string _pdfPath;
-        private OefeningenDefinitieSet _typeOefeningen;
+        private OefeningenDefinitieSet _selectedOefeningenDefinitieSet;
         private bool _comboboxChanging;
         private const string LogoPath = @"c:\temp\logo\";
 
@@ -23,13 +20,6 @@ namespace OefeningenLogo
 
         private void MaakOefeningen_Load(object sender, EventArgs e)
         {
-            _pdfPath = Path.Combine(LogoPath, DateTime.Now.ToString("yyyyMMdd"));
-            _oefeningenGenerator = new OefeningenGenerator(_pdfPath, LogoPath);
-
-            TypeOefeningCombobox.Items.Add(TypeOefeningen.Type1);
-            TypeOefeningCombobox.Items.Add(TypeOefeningen.Type2);
-            TypeOefeningCombobox.Items.Add(TypeOefeningen.Type3);
-
             Directory.CreateDirectory(LogoPath);
             var di = new DirectoryInfo(LogoPath);
             foreach (var fileInfo in di.GetFiles("*.dat"))
@@ -37,7 +27,7 @@ namespace OefeningenLogo
                 TypeOefeningCombobox.Items.Add(fileInfo.Name.Substring(0, fileInfo.Name.Length - 4));
             }
 
-            TypeOefeningCombobox.Items.Add(TypeOefeningen.Andere);
+            TypeOefeningCombobox.Items.Add("nieuw");
             TypeOefeningCombobox.SelectedItem = TypeOefeningCombobox.Items[0];
         }
 
@@ -47,15 +37,15 @@ namespace OefeningenLogo
 
             AndereOefeningenTextbox.Visible = false;
 
-            _typeOefeningen = GetTypeOefeningen();
+            _selectedOefeningenDefinitieSet = GetTypeOefeningen();
 
             OefeningenTextbox.Text = "";
-            foreach (var oefening in _typeOefeningen.Oefeningen)
+            foreach (var oefening in _selectedOefeningenDefinitieSet.Oefeningen)
             {
                 OefeningenTextbox.Text += oefening + "\r\n";
             }
             GetalDefinitiesListbox.Items.Clear();
-            foreach (var getaldefinitie in _typeOefeningen.GetalDefinities)
+            foreach (var getaldefinitie in _selectedOefeningenDefinitieSet.GetalDefinities)
             {
                 GetalDefinitiesListbox.Items.Add(getaldefinitie);
             }
@@ -65,16 +55,12 @@ namespace OefeningenLogo
 
         private OefeningenDefinitieSet GetTypeOefeningen()
         {
-            if (!(TypeOefeningCombobox.SelectedItem is TypeOefeningen))
-                return _oefeningenGenerator.GetOefening((string)TypeOefeningCombobox.SelectedItem);
+            if ((string)TypeOefeningCombobox.SelectedItem != "nieuw")
+                return new OefeningenProvider(LogoPath).GetOefening((string)TypeOefeningCombobox.SelectedItem);
 
-            var typeOefening = (TypeOefeningen)TypeOefeningCombobox.SelectedItem;
-            if (typeOefening == TypeOefeningen.Andere)
-            {
-                AndereOefeningenTextbox.Text = "Andere oefeningen " + _andereOefeningenCounter;
-                AndereOefeningenTextbox.Visible = true;
-            }
-            return _oefeningenGenerator.GetOefening(typeOefening);
+            AndereOefeningenTextbox.Text = "Nieuwe oefeningen " + _andereOefeningenCounter;
+            AndereOefeningenTextbox.Visible = true;
+            return new OefeningenProvider(LogoPath).GetNieuweOefening();
         }
 
         private void GenerateButton_Click(object sender, EventArgs e)
@@ -83,31 +69,23 @@ namespace OefeningenLogo
             var einddatum = EindDatumDateTimePicker.Value;
             try
             {
-                _oefeningenGenerator.MaakOefeningenLogo(startdatum, einddatum, _typeOefeningen);
+                var pdfPath = Path.Combine(LogoPath, DateTime.Now.ToString("yyyyMMdd"));
+                var pdfGenerator = new PdfGenerator(pdfPath);
+                var oefeningenGenerator = new OefeningenGenerator(pdfGenerator);
 
-                var options = string.Format(@"/select, ""{0}\oefeningen_{1:yyyyMMdd}.pdf""", _pdfPath, startdatum);
+                oefeningenGenerator.MaakOefeningenLogo(startdatum, einddatum, _selectedOefeningenDefinitieSet);
+
+                var options = string.Format(@"/select, ""{0}\oefeningen_{1:yyyyMMdd}.pdf""", pdfPath, startdatum);
                 Process.Start("explorer.exe", options);
 
-                if (!(TypeOefeningCombobox.SelectedItem is TypeOefeningen) ||
-                    (TypeOefeningen)TypeOefeningCombobox.SelectedItem != TypeOefeningen.Andere)
+                if ((string)TypeOefeningCombobox.SelectedItem != "nieuw")
                     return;
 
-                var andereOefeningen = AndereOefeningenTextbox.Text;
-                var filename = Path.Combine(LogoPath, andereOefeningen + ".dat");
-                using (var fs = File.Open(filename, FileMode.Create, FileAccess.Write))
-                using (var sw = new StreamWriter(fs))
-                {
-                    sw.WriteLine("[getal]");
-                    foreach (var getalDefinitie in _typeOefeningen.GetalDefinities)
-                    {
-                        sw.WriteLine(getalDefinitie.ToString("|"));
-                    }
-                    sw.WriteLine("[oefening]");
-                    foreach (var oefening in _typeOefeningen.Oefeningen)
-                    {
-                        sw.WriteLine(oefening);
-                    }
-                }
+                var nieuweOefening = AndereOefeningenTextbox.Text;
+                var filename = Path.Combine(LogoPath, nieuweOefening + ".dat");
+
+                var oefeningenProvider = new OefeningenProvider(LogoPath);
+                oefeningenProvider.SaveOefening(filename, _selectedOefeningenDefinitieSet);
                 _andereOefeningenCounter++;
             }
             catch (Exception ex)
@@ -124,13 +102,13 @@ namespace OefeningenLogo
             var oefeningen = OefeningenTextbox.Text.Split(new[] { "\r\n" }, StringSplitOptions.None)
                 .Where(x => !String.IsNullOrWhiteSpace(x))
                 .ToList();
-            _typeOefeningen.SetOefeningen(oefeningen);
+            _selectedOefeningenDefinitieSet.SetOefeningen(oefeningen);
         }
 
         private void GetalDefToevoegenButton_Click(object sender, EventArgs e)
         {
             var g = "|" + LaagsteTextbox.Text + "|" + HoogsteTextbox.Text + "|" + CijfersNaDeKommaTextbox.Text;
-            var getalDefinitie = _typeOefeningen.GetaldefinitieToevoegen(g);
+            var getalDefinitie = _selectedOefeningenDefinitieSet.GetaldefinitieToevoegen(g);
             GetalDefinitiesListbox.Items.Add(getalDefinitie);
         }
     }
