@@ -44,6 +44,16 @@ namespace OefeningenLogo
             return random.Next(minValue, maxValue)/(decimal) Math.Pow(10, _cijfersNaDeKomma);
         }
 
+        public string GetGetal()
+        {
+            if (_cijfersNaDeKomma == 0)
+                return string.Format("random.Next({0}, {1}) ", _minValue, _maxValue);
+
+            var minValue = _minValue * (int)Math.Pow(10, _cijfersNaDeKomma);
+            var maxValue = _maxValue * (int)Math.Pow(10, _cijfersNaDeKomma);
+            return string.Format("random.Next({0}, {1})/{2}M", minValue, maxValue, (decimal)Math.Pow(10, _cijfersNaDeKomma));
+        }
+
         public bool IsResult
         {
             get { return _isResult; }

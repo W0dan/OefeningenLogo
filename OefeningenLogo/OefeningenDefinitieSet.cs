@@ -59,6 +59,13 @@ namespace OefeningenLogo
             return result;
         }
 
+        public List<decimal> Test(int aantal)
+        {
+            var test = _getalSetDefinitie.Generate(aantal);
+
+            return test;
+        }
+
         public void OefeningToevoegen(string line)
         {
             _oefeningen.Add(line);

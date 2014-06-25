@@ -29,6 +29,11 @@ namespace OefeningenLogo
             }
             _pdfGenerator.Write();
         }
+
+        public void Test(DateTime startdatum, DateTime einddatum, OefeningenDefinitieSet oefeningenDefinitieSet)
+        {
+            var oefeningen = oefeningenDefinitieSet.Test(25);
+        }
     }
 
     public enum ReadModus

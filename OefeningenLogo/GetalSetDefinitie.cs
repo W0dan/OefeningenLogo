@@ -5,7 +5,7 @@ namespace OefeningenLogo
 {
     public class GetalSetDefinitie
     {
-        private readonly string _tokenstring;
+        private string _tokenstring;
         private readonly List<GetalDefinitie> _getalDefinities;
 
         public GetalSetDefinitie(string tokenstring)
@@ -63,6 +63,11 @@ namespace OefeningenLogo
             get { return _getalDefinities; }
         }
 
+        public void SetTokenString(string tokenString)
+        {
+            _tokenstring = tokenString;
+        }
+
         public string TokenString
         {
             get { return _tokenstring; }
@@ -88,6 +93,25 @@ namespace OefeningenLogo
             getalSet.AddGetal(result.Value);
 
             return getalSet;
+        }
+
+        public List<decimal> Generate(int aantal)
+        {
+            var code = _tokenstring;
+
+            foreach (var getalDefinitie in _getalDefinities)
+            {
+                if (getalDefinitie.IsResult)
+                    continue;
+
+                var getal = getalDefinitie.GetGetal();
+
+                code = code.Replace(getalDefinitie.Name, getal);
+            }
+
+            var result = ExpressionExecutor.Execute(code, aantal);
+
+            return result;
         }
     }
 }

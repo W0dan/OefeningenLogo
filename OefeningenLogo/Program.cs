@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
+using OefeningenLogo.UI;
 
 namespace OefeningenLogo
 {
@@ -15,7 +14,12 @@ namespace OefeningenLogo
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MaakOefeningen());
+
+            var window = new ExerciseBuilderWindow();
+            new ExerciseBuilderController(window);
+            Application.Run(window);
+
+            //Application.Run(new MaakOefeningen());
         }
     }
 }

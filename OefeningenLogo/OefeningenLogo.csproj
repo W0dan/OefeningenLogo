@@ -11,7 +11,8 @@
     <RootNamespace>OefeningenLogo</RootNamespace>
     <AssemblyName>OefeningenLogo</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
@@ -50,6 +51,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\XmlHelper.cs" />
+    <Compile Include="Backend\IRepository.cs" />
+    <Compile Include="Backend\Repository.cs" />
     <Compile Include="ExpressionExecutor.cs" />
     <Compile Include="GetalDefinitie.cs" />
     <Compile Include="GetalSet.cs" />
@@ -64,9 +68,59 @@
     <Compile Include="OefeningenDefinitieSet.cs" />
     <Compile Include="OefeningenGenerator.cs" />
     <Compile Include="OefeningenProvider.cs" />
+    <Compile Include="Oefeningen\ExerciseDefinition.cs" />
+    <Compile Include="Oefeningen\ExerciseGenerator.cs" />
+    <Compile Include="Oefeningen\ExerciseTemplate.cs" />
+    <Compile Include="Oefeningen\IAmAConstraint.cs" />
+    <Compile Include="Oefeningen\IAmADefinitionOfAnExercise.cs" />
+    <Compile Include="Oefeningen\IAmADefinitionOfANumber.cs" />
+    <Compile Include="Oefeningen\IAmATemplateForAnExercise.cs" />
+    <Compile Include="Oefeningen\IProvideRandomNumbers.cs" />
+    <Compile Include="Oefeningen\NumberDefinition.cs" />
+    <Compile Include="Oefeningen\RandomNumberGenerator.cs" />
     <Compile Include="PdfGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UI\CreateExercise\AddConstraint\AddConstraintWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreateExercise\AddConstraint\AddConstraintWindow.Designer.cs">
+      <DependentUpon>AddConstraintWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CreateExercise\AddNumber\AddNumberController.cs" />
+    <Compile Include="UI\CreateExercise\AddNumber\AddNumberWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreateExercise\AddNumber\AddNumberWindow.Designer.cs">
+      <DependentUpon>AddNumberWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CreateExercise\AddConstraint\CreateConstraint\CreateConstraintWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreateExercise\AddConstraint\CreateConstraint\CreateConstraintWindow.Designer.cs">
+      <DependentUpon>CreateConstraintWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CreateExercise\AddNumber\IAddNumberController.cs" />
+    <Compile Include="UI\CreateExercise\AddNumber\IAddNumberWindow.cs" />
+    <Compile Include="UI\CreateExercise\CreateExerciseController.cs" />
+    <Compile Include="UI\CreateExercise\CreateExerciseWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\CreateExercise\CreateExerciseWindow.Designer.cs">
+      <DependentUpon>CreateExerciseWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\CreateExercise\ICreateExerciseController.cs" />
+    <Compile Include="UI\CreateExercise\ICreateExerciseWindow.cs" />
+    <Compile Include="UI\ExerciseBuilderWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ExerciseBuilderWindow.Designer.cs">
+      <DependentUpon>ExerciseBuilderWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\ExerciseBuilderController.cs" />
+    <Compile Include="UI\Extensions\FormExtensions.cs" />
+    <Compile Include="UI\IExerciseBuilderController.cs" />
+    <Compile Include="UI\IExerciseBuilderWindow.cs" />
     <EmbeddedResource Include="MaakOefeningen.resx">
       <DependentUpon>MaakOefeningen.cs</DependentUpon>
     </EmbeddedResource>
@@ -78,7 +132,24 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="UI\CreateExercise\AddConstraint\AddConstraintWindow.resx">
+      <DependentUpon>AddConstraintWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CreateExercise\AddNumber\AddNumberWindow.resx">
+      <DependentUpon>AddNumberWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CreateExercise\AddConstraint\CreateConstraint\CreateConstraintWindow.resx">
+      <DependentUpon>CreateConstraintWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\CreateExercise\CreateExerciseWindow.resx">
+      <DependentUpon>CreateExerciseWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExerciseBuilderWindow.resx">
+      <DependentUpon>ExerciseBuilderWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -89,6 +160,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

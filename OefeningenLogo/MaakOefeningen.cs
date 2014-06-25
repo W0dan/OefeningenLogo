@@ -1,8 +1,15 @@
 ﻿using System;
+using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using System.Xml;
+using System.Xml.Linq;
+using Microsoft.CSharp;
+using OefeningenLogo.Oefeningen;
 
 namespace OefeningenLogo
 {
@@ -49,6 +56,7 @@ namespace OefeningenLogo
             {
                 GetalDefinitiesListbox.Items.Add(getaldefinitie);
             }
+            VerbandTextbox.Text = _selectedOefeningenDefinitieSet.GetalSetDefinitie.TokenString;
 
             _comboboxChanging = false;
         }
@@ -60,7 +68,7 @@ namespace OefeningenLogo
 
             AndereOefeningenTextbox.Text = "Nieuwe oefeningen " + _andereOefeningenCounter;
             AndereOefeningenTextbox.Visible = true;
-            return new OefeningenProvider(LogoPath).GetNieuweOefening();
+            return new OefeningenProvider(LogoPath).GetNieuweOefening(VerbandTextbox.Text);
         }
 
         private void GenerateButton_Click(object sender, EventArgs e)
@@ -74,6 +82,15 @@ namespace OefeningenLogo
                 var oefeningenGenerator = new OefeningenGenerator(pdfGenerator);
 
                 oefeningenGenerator.MaakOefeningenLogo(startdatum, einddatum, _selectedOefeningenDefinitieSet);
+
+                try
+                {
+                    oefeningenGenerator.Test(startdatum, einddatum, _selectedOefeningenDefinitieSet);
+                }
+                catch (Exception)
+                {
+                    //mute exception
+                }
 
                 var options = string.Format(@"/select, ""{0}\oefeningen_{1:yyyyMMdd}.pdf""", pdfPath, startdatum);
                 Process.Start("explorer.exe", options);
@@ -110,6 +127,115 @@ namespace OefeningenLogo
             var g = "|" + LaagsteTextbox.Text + "|" + HoogsteTextbox.Text + "|" + CijfersNaDeKommaTextbox.Text;
             var getalDefinitie = _selectedOefeningenDefinitieSet.GetaldefinitieToevoegen(g);
             GetalDefinitiesListbox.Items.Add(getalDefinitie);
+        }
+
+        private void VerbandTextbox_TextChanged(object sender, EventArgs e)
+        {
+            _selectedOefeningenDefinitieSet.GetalSetDefinitie.SetTokenString(VerbandTextbox.Text);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var eg = new ExerciseGenerator();
+
+            var result = eg.Generate();
+
+            foreach (var item in result)
+            {
+                Debug.WriteLine(item);
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            const string xmlFilename = @"C:\Temp\logo\exercises.xml";
+
+            using (var fs = File.OpenRead(xmlFilename))
+            {
+                using (var sr = new StreamReader(fs))
+                {
+                    var xml = sr.ReadToEnd();
+                    var doc = XDocument.Parse(xml);
+
+                    var allConstraintsXml = from c in doc.Descendants("constraints").First().Descendants("constraint")
+                                         select c;
+
+                    var allConstraints = new Dictionary<string, IAmAConstraint>();
+                    foreach (var constraintXml in allConstraintsXml)
+                    {
+                        var name = constraintXml.Attribute("name").Value;
+                        var value = constraintXml.Attribute("value").Value;
+
+                        allConstraints.Add(name, BuildConstraint(value));
+                    }
+
+                    var exercisesXml = from ex in doc.Descendants("exercise")
+                                       select ex;
+
+                    foreach (var exerciseXml in exercisesXml)
+                    {
+                        var exercise = new ExerciseDefinition(exerciseXml.Attribute("name").Value, new ExerciseTemplate(exerciseXml.Attribute("template").Value));
+
+                        var numbersXml = from n in exerciseXml.Descendants("numbers").First().Descendants("number")
+                                         select n;
+
+                        foreach (var number in numbersXml)
+                        {
+                            var minValue = int.Parse(number.Attribute("minvalue").Value);
+                            var maxValue = int.Parse(number.Attribute("maxvalue").Value);
+                            var decimals = int.Parse(number.Attribute("decimals").Value);
+                            exercise.AddNumberDefinition(new NumberDefinition("", minValue, maxValue, decimals));
+                        }
+
+                        var constraintsRoot = exerciseXml.Descendants("constraints").FirstOrDefault();
+                        if (constraintsRoot != null)
+                        {
+                            var constraintsXml = from c in constraintsRoot.Descendants("constraint")
+                                                 select c;
+
+                            foreach (var constraint in constraintsXml)
+                            {
+                                var constraintName = constraint.Attribute("type").Value;
+
+                                exercise.AddConstraint(allConstraints[constraintName]);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
+        private IAmAConstraint BuildConstraint(string value)
+        {
+            var definition =
+                string.Format(@"public class Constraint : OefeningenLogo.Oefeningen.IAmAConstraint
+{{
+    public bool IsValid(params decimal[] numbers)
+    {{
+        return {0};
+    }}
+}}", value);
+
+            var csCompiler = new CSharpCodeProvider();
+            var compilerParameters = new CompilerParameters
+                                         {
+                                             GenerateInMemory = true,
+                                             GenerateExecutable = false
+                                         };
+            var location = Assembly.GetExecutingAssembly().Location;
+            compilerParameters.ReferencedAssemblies.Add(location);
+            var results = csCompiler.CompileAssemblyFromSource(compilerParameters, new[] { definition });
+
+            IAmAConstraint constraint = null;
+
+            if (results.Errors.Count == 0)
+            {
+                var assembly = results.CompiledAssembly;
+                constraint = assembly.CreateInstance("Constraint") as IAmAConstraint;
+            }
+
+            return constraint;
         }
     }
 }

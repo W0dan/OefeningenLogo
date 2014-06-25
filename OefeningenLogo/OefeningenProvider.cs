@@ -13,10 +13,9 @@ namespace OefeningenLogo
             _logoPath = logoPath;
         }
 
-        public OefeningenDefinitieSet GetNieuweOefening()
+        public OefeningenDefinitieSet GetNieuweOefening(string tokenString)
         {
-            //todo: tokenstring hierin meenemen
-            return new OefeningenDefinitieSet(new List<string>(), new GetalSetDefinitie(""));
+            return new OefeningenDefinitieSet(new List<string>(), new GetalSetDefinitie(tokenString));
         }
 
         public OefeningenDefinitieSet GetOefening(string typeOefening)
@@ -33,7 +32,7 @@ namespace OefeningenLogo
             using (var sw = new StreamWriter(fs))
             {
                 sw.WriteLine("[getalset]");
-                sw.WriteLine(set.GetalSetDefinitie);
+                sw.WriteLine(set.GetalSetDefinitie.TokenString);
                 sw.WriteLine("[getal]");
                 foreach (var getalDefinitie in set.GetalDefinities)
                 {
