@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 using OefeningenLogo.Backend;
 using OefeningenLogo.Oefeningen;
+using OefeningenLogo.UI.CreateExercise.AddConstraint;
 using OefeningenLogo.UI.CreateExercise.AddNumber;
 
 namespace OefeningenLogo.UI.CreateExercise
@@ -62,9 +63,13 @@ namespace OefeningenLogo.UI.CreateExercise
 
         private void AddConstraintButtonClicked()
         {
-            //open new dialog to add a constraint
+            var constraint = AddConstraintController.ShowWindow(_window, _repository);
 
-            //add the number to the constraints-collection
+            if (constraint == null)
+                return;
+
+            _constraints.Add(constraint);
+            _window.AddNumber(constraint.ToString());
         }
 
         private void AddNumberButtonClicked()
