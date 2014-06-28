@@ -7,7 +7,7 @@ namespace OefeningenLogo.UI.CreateExercise.AddNumber
     public class AddNumberController : IAddNumberController
     {
         private readonly IAddNumberWindow _window;
-        private IAmADefinitionOfANumber _number;
+        private INumberDefinition _number;
         private string _name;
         private int _decimals;
         private int _maxvalue;
@@ -17,23 +17,21 @@ namespace OefeningenLogo.UI.CreateExercise.AddNumber
         private bool _minvalueValid;
         private bool _nameValid;
 
-        public static IAmADefinitionOfANumber ShowWindow(IWin32Window parent)
-        {
-            var window = new AddNumberWindow();
-            var result = new AddNumberController(window);
-            window.ShowDialog(parent);
-            return result._number;
-        }
-
-        private AddNumberController(IAddNumberWindow window)
+        public AddNumberController(IAddNumberWindow window)
         {
             _window = window;
+        }
+
+        public INumberDefinition ShowWindow(IWindow parent)
+        {
             _window.SaveButtonClicked += SaveButtonClicked;
             _window.CancelButtonClicked += CancelButtonClicked;
             _window.NameChanged += NameChanged;
             _window.MinvalueChanged += MinvalueChanged;
             _window.MaxvalueChanged += MaxvalueChanged;
             _window.DecimalsChanged += DecimalsChanged;
+            _window.ShowDialog(parent);
+            return _number;
         }
 
         private void DecimalsChanged(string decimals)

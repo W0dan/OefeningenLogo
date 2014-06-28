@@ -7,7 +7,7 @@ namespace OefeningenLogoTest.Oefeningen.Given_a_definition_for_an_exercise1.And_
     {
         public AndAConstraint()
         {
-            var mock = new Mock<IAmAConstraint>();
+            var mock = new Mock<IConstraint>();
 
             mock
                 .Setup(m => m.IsValid(It.Is<decimal[]>(ar => ar[0] <= ar[1])))

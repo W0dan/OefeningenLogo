@@ -1,9 +1,9 @@
 using System;
-using System.Windows.Forms;
+using OefeningenLogo.UI.CreateExercise.AddNumber;
 
 namespace OefeningenLogo.UI.CreateExercise
 {
-    public interface ICreateExerciseWindow : IWin32Window
+    public interface ICreateExerciseWindow : IWindow
     {
         void Close();
         void AddNumber(string number);
@@ -16,5 +16,6 @@ namespace OefeningenLogo.UI.CreateExercise
         event Action AddConstraintButtonClicked;
         event Action<string> NameChanged;
         event Action<string> TemplateChanged;
+        void Clear();
     }
 }

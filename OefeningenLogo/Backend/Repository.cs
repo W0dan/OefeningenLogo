@@ -1,22 +1,32 @@
-﻿using System.CodeDom.Compiler;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Xml.Linq;
-using Microsoft.CSharp;
 using OefeningenLogo.Oefeningen;
 
 namespace OefeningenLogo.Backend
 {
     public class Repository : IRepository
     {
-        public void SaveExercise(IAmADefinitionOfAnExercise exercise)
+        const string XmlFilename = @"C:\Temp\logo\exercises.xml";
+
+        private XDocument _doc;
+
+        private void Load()
         {
-            XmlHelper.SaveXml(doc => SaveExercise(doc, exercise));
+            if (_doc == null)
+                _doc = XDocument.Load(XmlFilename);
         }
 
-        private void SaveExercise(XContainer doc, IAmADefinitionOfAnExercise exercise)
+        private void Save()
         {
+            if (_doc != null)
+                _doc.Save(XmlFilename);
+        }
+
+        public void SaveExercise(IExerciseDefinition exercise)
+        {
+            Load();
+
             var exerciseXml = new XElement("exercise");
             exerciseXml.Add(new XAttribute("name", exercise.Name));
             exerciseXml.Add(new XAttribute("template", exercise.Template));
@@ -29,33 +39,61 @@ namespace OefeningenLogo.Backend
                 numberXml.Add(new XAttribute("minvalue", number.MinValue));
                 numberXml.Add(new XAttribute("maxvalue", number.MaxValue));
                 numberXml.Add(new XAttribute("decimals", number.Decimals));
-                
+
                 numbersXml.Add(numberXml);
             }
 
-            doc.Element("exercises").Add(exerciseXml);
+            _doc.Element("exercisebuilder")
+                .Element("exercises")
+                .Add(exerciseXml);
+
+            Save();
         }
 
-        public void SaveConstraint(IAmAConstraint constraint)
+        public void SaveConstraint(IConstraint constraint)
         {
 
         }
 
-        public IEnumerable<IAmADefinitionOfAnExercise> GetAllExercises()
+        public IEnumerable<IExerciseSheet> GetAllSheets()
         {
-            var exercises = new List<IAmADefinitionOfAnExercise>();
+            Load();
 
-            XmlHelper.ReadXml(doc => GetAllExercises(doc, exercises));
+            var sheets = new List<IExerciseSheet>();
 
-            return exercises;
+            var sheetsXml = from s in _doc.Descendants("sheets")
+                                .Single().Descendants("sheet")
+                            select s;
+
+            foreach (var sheetXml in sheetsXml)
+            {
+                var sheet = new ExerciseSheet(sheetXml.Attribute("name").Value);
+
+                var exercisesXml = from ex in sheetXml.Descendants("exercise")
+                                   select ex;
+
+                foreach (var exerciseXml in exercisesXml)
+                {
+                    // ?????????????????????????
+                    //sheet.AddExercise();
+                }
+
+                sheets.Add(sheet);
+            }
+
+            return sheets;
         }
 
-        private void GetAllExercises(XContainer doc, ICollection<IAmADefinitionOfAnExercise> exercises)
+        public IEnumerable<IExerciseDefinition> GetAllExercises()
         {
-            var allConstraints = new Dictionary<string, IAmAConstraint>();
-            GetAllConstraints(doc, allConstraints);
+            Load();
 
-            var exercisesXml = from ex in doc.Descendants("exercise")
+            var exercises = new List<IExerciseDefinition>();
+
+            var allConstraints = GetAllConstraints();
+
+            var exercisesXml = from ex in _doc.Descendants("exercises")
+                                   .Single().Descendants("exercise")
                                select ex;
 
             foreach (var exerciseXml in exercisesXml)
@@ -89,21 +127,18 @@ namespace OefeningenLogo.Backend
                     }
                 }
             }
+
+            return exercises;
         }
 
-        public IDictionary<string, IAmAConstraint> GetAllConstraints()
+        public IDictionary<string, IConstraint> GetAllConstraints()
         {
-            var constraints = new Dictionary<string, IAmAConstraint>();
+            Load();
 
-            XmlHelper.ReadXml(doc => GetAllConstraints(doc, constraints));
+            var constraints = new Dictionary<string, IConstraint>();
 
-            return constraints;
-        }
-
-        private void GetAllConstraints(XContainer doc, IDictionary<string, IAmAConstraint> constraints)
-        {
             var allConstraintsXml =
-                from c in doc.Descendants("constraints").First().Descendants("constraint")
+                from c in _doc.Descendants("constraints").First().Descendants("constraint")
                 select c;
 
             foreach (var constraintXml in allConstraintsXml)
@@ -111,40 +146,11 @@ namespace OefeningenLogo.Backend
                 var name = constraintXml.Attribute("name").Value;
                 var value = constraintXml.Attribute("value").Value;
 
-                constraints.Add(name, BuildConstraint(value));
-            }
-        }
-
-        private IAmAConstraint BuildConstraint(string value)
-        {
-            var definition =
-                string.Format(@"public class Constraint : OefeningenLogo.Oefeningen.IAmAConstraint
-{{
-    public bool IsValid(params decimal[] numbers)
-    {{
-        return {0};
-    }}
-}}", value);
-
-            var csCompiler = new CSharpCodeProvider();
-            var compilerParameters = new CompilerParameters
-            {
-                GenerateInMemory = true,
-                GenerateExecutable = false
-            };
-            var location = Assembly.GetExecutingAssembly().Location;
-            compilerParameters.ReferencedAssemblies.Add(location);
-            var results = csCompiler.CompileAssemblyFromSource(compilerParameters, new[] { definition });
-
-            IAmAConstraint constraint = null;
-
-            if (results.Errors.Count == 0)
-            {
-                var assembly = results.CompiledAssembly;
-                constraint = assembly.CreateInstance("Constraint") as IAmAConstraint;
+                constraints.Add(name, ConstraintBuilder.BuildConstraint(value));
             }
 
-            return constraint;
+            return constraints;
         }
+
     }
 }

@@ -1,6 +1,6 @@
 namespace OefeningenLogo.Oefeningen
 {
-    public interface IAmAConstraint
+    public interface IConstraint
     {
         bool IsValid(params decimal[] numbers);
     }

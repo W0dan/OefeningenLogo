@@ -7,7 +7,7 @@ namespace OefeningenLogoTest.Oefeningen.Given_a_definition_for_an_exercise2.And_
     {
         public AndOneDefinitionOfANumber()
         {
-            var mock = new Mock<IAmADefinitionOfANumber>();
+            var mock = new Mock<INumberDefinition>();
             mock
                 .Setup(m => m.GetNumber(It.IsAny<IProvideRandomNumbers>()))
                 .Returns(Number);

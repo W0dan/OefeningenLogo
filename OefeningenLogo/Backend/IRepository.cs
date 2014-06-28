@@ -5,9 +5,9 @@ namespace OefeningenLogo.Backend
 {
     public interface IRepository
     {
-        void SaveExercise(IAmADefinitionOfAnExercise exercise);
-        void SaveConstraint(IAmAConstraint constraint);
-        IEnumerable<IAmADefinitionOfAnExercise> GetAllExercises();
-        IDictionary<string, IAmAConstraint> GetAllConstraints();
+        void SaveExercise(IExerciseDefinition exercise);
+        void SaveConstraint(IConstraint constraint);
+        IEnumerable<IExerciseDefinition> GetAllExercises();
+        IDictionary<string, IConstraint> GetAllConstraints();
     }
 }

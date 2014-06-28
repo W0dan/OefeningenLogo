@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
+using Castle.Windsor;
+using Castle.Windsor.Installer;
 using OefeningenLogo.UI;
 
 namespace OefeningenLogo
@@ -15,9 +17,14 @@ namespace OefeningenLogo
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            var window = new ExerciseBuilderWindow();
-            new ExerciseBuilderController(window);
-            Application.Run(window);
+            var container = new WindsorContainer();
+
+            container.Install(FromAssembly.This());
+
+            var rootController = container.Resolve<IRootController>();
+            Application.Run(rootController.Window);
+
+            container.Dispose();
 
             //Application.Run(new MaakOefeningen());
         }

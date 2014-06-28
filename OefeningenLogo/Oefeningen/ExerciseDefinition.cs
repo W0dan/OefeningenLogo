@@ -3,14 +3,14 @@ using System.Linq;
 
 namespace OefeningenLogo.Oefeningen
 {
-    public class ExerciseDefinition : IAmADefinitionOfAnExercise
+    public class ExerciseDefinition : IExerciseDefinition
     {
         private readonly string _name;
-        private readonly IAmATemplateForAnExercise _exerciseTemplate;
-        private readonly List<IAmADefinitionOfANumber> _numberDefinitions = new List<IAmADefinitionOfANumber>();
-        private readonly List<IAmAConstraint> _constraints = new List<IAmAConstraint>();
+        private readonly IExerciseTemplate _exerciseTemplate;
+        private readonly List<INumberDefinition> _numberDefinitions = new List<INumberDefinition>();
+        private readonly List<IConstraint> _constraints = new List<IConstraint>();
 
-        public ExerciseDefinition(string name, IAmATemplateForAnExercise exerciseTemplate)
+        public ExerciseDefinition(string name, IExerciseTemplate exerciseTemplate)
         {
             _name = name;
             _exerciseTemplate = exerciseTemplate;
@@ -19,17 +19,17 @@ namespace OefeningenLogo.Oefeningen
         public string Name { get { return _name; } }
         public string Template { get { return _exerciseTemplate.Template; } }
 
-        public void AddNumberDefinition(IAmADefinitionOfANumber numberDefinition)
+        public void AddNumberDefinition(INumberDefinition numberDefinition)
         {
             _numberDefinitions.Add(numberDefinition);
         }
 
-        public void AddConstraint(IAmAConstraint constraint)
+        public void AddConstraint(IConstraint constraint)
         {
             _constraints.Add(constraint);
         }
 
-        public IEnumerable<IAmADefinitionOfANumber> Numbers
+        public IEnumerable<INumberDefinition> Numbers
         {
             get { return _numberDefinitions; }
         }

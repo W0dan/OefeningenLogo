@@ -7,7 +7,7 @@ namespace OefeningenLogoTest.Oefeningen.Given_a_definition_for_an_exercise1
     {
         public GivenADefinitionOfAnExercise()
         {
-            var mock = new Mock<IAmATemplateForAnExercise>();
+            var mock = new Mock<IExerciseTemplate>();
             mock
                 .Setup(m => m.Template)
                 .Returns(Template);
@@ -20,6 +20,6 @@ namespace OefeningenLogoTest.Oefeningen.Given_a_definition_for_an_exercise1
             get { return "{0} + {1} = ."; }
         }
 
-        public IAmADefinitionOfAnExercise ExerciseDefinition { get; private set; }
+        public IExerciseDefinition ExerciseDefinition { get; private set; }
     }
 }

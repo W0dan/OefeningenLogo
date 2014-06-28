@@ -1,6 +1,6 @@
 namespace OefeningenLogo.Oefeningen
 {
-    public class ExerciseTemplate : IAmATemplateForAnExercise
+    public class ExerciseTemplate : IExerciseTemplate
     {
         private readonly string _template;
 

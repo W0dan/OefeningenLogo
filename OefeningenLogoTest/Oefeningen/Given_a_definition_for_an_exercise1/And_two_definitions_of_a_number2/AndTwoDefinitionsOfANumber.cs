@@ -26,9 +26,9 @@ namespace OefeningenLogoTest.Oefeningen.Given_a_definition_for_an_exercise1.And_
             get { return _number2Numbers[_number2Numbers.Length - 1]; }
         }
 
-        private IAmADefinitionOfANumber GetNumberDefinition(IList<decimal> numbersArray)
+        private INumberDefinition GetNumberDefinition(IList<decimal> numbersArray)
         {
-            var mock = new Mock<IAmADefinitionOfANumber>();
+            var mock = new Mock<INumberDefinition>();
             mock
                 .Setup(m => m.GetNumber(It.IsAny<IProvideRandomNumbers>()))
                 .ReturnsInOrder(numbersArray[0], numbersArray[1]);

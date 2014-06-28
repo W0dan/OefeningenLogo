@@ -1,4 +1,6 @@
-﻿using OefeningenLogo.Backend;
+﻿using System.Collections.Generic;
+using OefeningenLogo.Backend;
+using OefeningenLogo.Oefeningen;
 using OefeningenLogo.UI.CreateExercise;
 
 namespace OefeningenLogo.UI
@@ -7,13 +9,47 @@ namespace OefeningenLogo.UI
     {
         private readonly IExerciseBuilderWindow _window;
         private readonly IRepository _repository;
+        private readonly ICreateExerciseController _createExerciseController;
+        private IEnumerable<IExerciseDefinition> _exercises = new List<IExerciseDefinition>();
+        private ExerciseSheet _sheet;
 
-        public ExerciseBuilderController(IExerciseBuilderWindow window)
+        public ExerciseBuilderController(IExerciseBuilderWindow window, IRepository repository, ICreateExerciseController createExerciseController)
         {
-            _repository = new Repository();
             _window = window;
+            _repository = repository;
+            _createExerciseController = createExerciseController;
+        }
+
+        public IExerciseSheet ShowWindow(IExerciseSheetWindow parent)
+        {
+            _exercises = new List<IExerciseDefinition>();
+            _sheet = null;
+
             _window.Loaded += Loaded;
             _window.AddExerciseButtonClicked += AddExerciseButtonClicked;
+            _window.ExerciseSelected += ExerciseSelected;
+            _window.ExerciseUnselected += ExerciseUnselected;
+
+            _window.ShowDialog(parent);
+
+            _window.Loaded -= Loaded;
+            _window.AddExerciseButtonClicked -= AddExerciseButtonClicked;
+            _window.ExerciseSelected -= ExerciseSelected;
+            _window.ExerciseUnselected -= ExerciseUnselected;
+
+            _window.Clear();
+
+            return _sheet;
+        }
+
+        void ExerciseUnselected(string exerciseName)
+        {
+            _window.RemoveExercise(exerciseName);
+        }
+
+        void ExerciseSelected(string exerciseName)
+        {
+            _window.AddExercise(exerciseName);
         }
 
         private void Loaded()
@@ -23,7 +59,7 @@ namespace OefeningenLogo.UI
 
         private void AddExerciseButtonClicked()
         {
-            CreateExerciseController.ShowWindow(_window, _repository);
+            _createExerciseController.ShowWindow(_window);
 
             Reload();
         }

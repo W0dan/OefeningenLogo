@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using System.Windows.Forms;
 using OefeningenLogo.UI.Extensions;
 
@@ -19,34 +18,39 @@ namespace OefeningenLogo.UI.CreateExercise.AddNumber
             InitializeComponent();
         }
 
+        public void ShowDialog(IWindow parent)
+        {
+            base.ShowDialog(parent);
+        }
+
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => CancelButtonClicked());
+            CancelButtonClicked.Raise();
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => SaveButtonClicked());
+            SaveButtonClicked.Raise();
         }
 
         private void NameTextbox_TextChanged(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => NameChanged(NameTextbox.Text));
+            NameChanged.Raise(NameTextbox.Text);
         }
 
         private void MinvalueTextbox_TextChanged(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => MinvalueChanged(MinvalueTextbox.Text));
+            MinvalueChanged.Raise(MinvalueTextbox.Text);
         }
 
         private void MaxvalueTextbox_TextChanged(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => MaxvalueChanged(MaxvalueTextbox.Text));
+            MaxvalueChanged.Raise(MaxvalueTextbox.Text);
         }
 
         private void DecimalsTextbox_TextChanged(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => DecimalsChanged(DecimalsTextbox.Text));
+            DecimalsChanged.Raise(DecimalsTextbox.Text);
         }
 
         public void DecimalsValid(bool valid)
@@ -73,5 +77,6 @@ namespace OefeningenLogo.UI.CreateExercise.AddNumber
         {
             MessageBox.Show("Niet alle velden zijn goed ingevuld !");
         }
+
     }
 }

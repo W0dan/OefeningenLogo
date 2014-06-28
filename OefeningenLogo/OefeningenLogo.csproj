@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.3.0\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Windsor">
+      <HintPath>..\packages\Castle.Windsor.3.3.0\lib\net40\Castle.Windsor.dll</HintPath>
+    </Reference>
     <Reference Include="PdfCraft, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\PdfCraft\PdfCraft.dll</HintPath>
@@ -51,6 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Backend\ConstraintBuilder.cs" />
+    <Compile Include="Installers\ControllerInstaller.cs" />
+    <Compile Include="Oefeningen\IExerciseSheet.cs" />
     <Compile Include="Backend\XmlHelper.cs" />
     <Compile Include="Backend\IRepository.cs" />
     <Compile Include="Backend\Repository.cs" />
@@ -70,11 +79,12 @@
     <Compile Include="OefeningenProvider.cs" />
     <Compile Include="Oefeningen\ExerciseDefinition.cs" />
     <Compile Include="Oefeningen\ExerciseGenerator.cs" />
+    <Compile Include="Oefeningen\ExerciseSheet.cs" />
     <Compile Include="Oefeningen\ExerciseTemplate.cs" />
-    <Compile Include="Oefeningen\IAmAConstraint.cs" />
-    <Compile Include="Oefeningen\IAmADefinitionOfAnExercise.cs" />
-    <Compile Include="Oefeningen\IAmADefinitionOfANumber.cs" />
-    <Compile Include="Oefeningen\IAmATemplateForAnExercise.cs" />
+    <Compile Include="Oefeningen\IConstraint.cs" />
+    <Compile Include="Oefeningen\IExerciseDefinition.cs" />
+    <Compile Include="Oefeningen\INumberDefinition.cs" />
+    <Compile Include="Oefeningen\IExerciseTemplate.cs" />
     <Compile Include="Oefeningen\IProvideRandomNumbers.cs" />
     <Compile Include="Oefeningen\NumberDefinition.cs" />
     <Compile Include="Oefeningen\RandomNumberGenerator.cs" />
@@ -88,6 +98,11 @@
     <Compile Include="UI\CreateExercise\AddConstraint\AddConstraintWindow.Designer.cs">
       <DependentUpon>AddConstraintWindow.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\CreateExercise\AddConstraint\IAddConstraintController.cs" />
+    <Compile Include="UI\CreateExercise\AddConstraint\IAddConstraintWindow.cs" />
+    <Compile Include="UI\CreateExercise\AddNumber\IWindow.cs" />
+    <Compile Include="UI\Extensions\ListviewExtensions.cs" />
+    <Compile Include="UI\IController.cs" />
     <Compile Include="UI\CreateExercise\AddNumber\AddNumberController.cs" />
     <Compile Include="UI\CreateExercise\AddNumber\AddNumberWindow.cs">
       <SubType>Form</SubType>
@@ -119,9 +134,19 @@
       <DependentUpon>ExerciseBuilderWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\ExerciseBuilderController.cs" />
+    <Compile Include="UI\ExerciseSheetController.cs" />
+    <Compile Include="UI\ExerciseSheetWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\ExerciseSheetWindow.Designer.cs">
+      <DependentUpon>ExerciseSheetWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\Extensions\FormExtensions.cs" />
     <Compile Include="UI\IExerciseBuilderController.cs" />
     <Compile Include="UI\IExerciseBuilderWindow.cs" />
+    <Compile Include="UI\IExerciseSheetWindow.cs" />
+    <Compile Include="UI\IRootController.cs" />
+    <Compile Include="UI\ListviewKeyValuePair.cs" />
     <EmbeddedResource Include="MaakOefeningen.resx">
       <DependentUpon>MaakOefeningen.cs</DependentUpon>
     </EmbeddedResource>
@@ -150,7 +175,11 @@
     <EmbeddedResource Include="UI\ExerciseBuilderWindow.resx">
       <DependentUpon>ExerciseBuilderWindow.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\ExerciseSheetWindow.resx">
+      <DependentUpon>ExerciseSheetWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

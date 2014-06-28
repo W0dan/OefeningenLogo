@@ -1,6 +1,6 @@
 namespace OefeningenLogo.Oefeningen
 {
-    public interface IAmATemplateForAnExercise
+    public interface IExerciseTemplate
     {
         string Template { get; }
     }

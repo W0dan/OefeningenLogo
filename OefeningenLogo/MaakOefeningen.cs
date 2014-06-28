@@ -160,7 +160,7 @@ namespace OefeningenLogo
                     var allConstraintsXml = from c in doc.Descendants("constraints").First().Descendants("constraint")
                                          select c;
 
-                    var allConstraints = new Dictionary<string, IAmAConstraint>();
+                    var allConstraints = new Dictionary<string, IConstraint>();
                     foreach (var constraintXml in allConstraintsXml)
                     {
                         var name = constraintXml.Attribute("name").Value;
@@ -206,7 +206,7 @@ namespace OefeningenLogo
             }
         }
 
-        private IAmAConstraint BuildConstraint(string value)
+        private IConstraint BuildConstraint(string value)
         {
             var definition =
                 string.Format(@"public class Constraint : OefeningenLogo.Oefeningen.IAmAConstraint
@@ -227,12 +227,12 @@ namespace OefeningenLogo
             compilerParameters.ReferencedAssemblies.Add(location);
             var results = csCompiler.CompileAssemblyFromSource(compilerParameters, new[] { definition });
 
-            IAmAConstraint constraint = null;
+            IConstraint constraint = null;
 
             if (results.Errors.Count == 0)
             {
                 var assembly = results.CompiledAssembly;
-                constraint = assembly.CreateInstance("Constraint") as IAmAConstraint;
+                constraint = assembly.CreateInstance("Constraint") as IConstraint;
             }
 
             return constraint;

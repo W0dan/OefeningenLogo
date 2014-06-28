@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Windows.Forms;
 using OefeningenLogo.Backend;
 using OefeningenLogo.Oefeningen;
 using OefeningenLogo.UI.CreateExercise.AddConstraint;
@@ -11,32 +10,48 @@ namespace OefeningenLogo.UI.CreateExercise
     {
         private readonly ICreateExerciseWindow _window;
         private readonly IRepository _repository;
+        private readonly IAddNumberController _addNumberController;
+        private readonly IAddConstraintController _addConstraintController;
         private string _exerciseName;
         private string _exerciseTemplate;
-        private readonly List<IAmADefinitionOfANumber> _numbers = new List<IAmADefinitionOfANumber>();
-        private readonly List<IAmAConstraint> _constraints = new List<IAmAConstraint>();
-        private IAmADefinitionOfAnExercise _exercise;
+        private List<INumberDefinition> _numbers = new List<INumberDefinition>();
+        private List<IConstraint> _constraints = new List<IConstraint>();
         private bool _templateValid;
         private bool _nameValid;
 
-        public static IAmADefinitionOfAnExercise ShowWindow(IWin32Window parent, IRepository repository)
+        public CreateExerciseController(ICreateExerciseWindow window, IRepository repository, IAddNumberController addNumberController, IAddConstraintController addConstraintController)
         {
-            var window = new CreateExerciseWindow();
-            var result = new CreateExerciseController(window, repository);
-            window.ShowDialog(parent);
-            return result._exercise;
-        }
 
-        private CreateExerciseController(ICreateExerciseWindow window, IRepository repository)
-        {
             _window = window;
             _repository = repository;
+            _addNumberController = addNumberController;
+            _addConstraintController = addConstraintController;
+        }
+
+        public void ShowWindow(IWindow parent)
+        {
+            _nameValid = false;
+            _templateValid = false;
+            _numbers = new List<INumberDefinition>();
+            _constraints = new List<IConstraint>();
+
             _window.SaveButtonClicked += SaveButtonClicked;
             _window.CancelButtonClicked += CancelButtonClicked;
             _window.AddNumberButtonClicked += AddNumberButtonClicked;
             _window.AddConstraintButtonClicked += AddConstraintButtonClicked;
             _window.NameChanged += NameChanged;
             _window.TemplateChanged += TemplateChanged;
+
+            _window.ShowDialog(parent);
+
+            _window.SaveButtonClicked -= SaveButtonClicked;
+            _window.CancelButtonClicked -= CancelButtonClicked;
+            _window.AddNumberButtonClicked -= AddNumberButtonClicked;
+            _window.AddConstraintButtonClicked -= AddConstraintButtonClicked;
+            _window.NameChanged -= NameChanged;
+            _window.TemplateChanged -= TemplateChanged;
+
+            _window.Clear();
         }
 
         private void TemplateChanged(string template)
@@ -44,7 +59,7 @@ namespace OefeningenLogo.UI.CreateExercise
             _templateValid = true;
             if (string.IsNullOrWhiteSpace(template))
                 _templateValid = false;
-            
+
             _window.TemplateValid(_templateValid);
 
             _exerciseTemplate = template;
@@ -63,7 +78,7 @@ namespace OefeningenLogo.UI.CreateExercise
 
         private void AddConstraintButtonClicked()
         {
-            var constraint = AddConstraintController.ShowWindow(_window, _repository);
+            var constraint = _addConstraintController.ShowWindow(_window);
 
             if (constraint == null)
                 return;
@@ -74,7 +89,7 @@ namespace OefeningenLogo.UI.CreateExercise
 
         private void AddNumberButtonClicked()
         {
-            var number = AddNumberController.ShowWindow(_window);
+            var number = _addNumberController.ShowWindow(_window);
 
             if (number == null)
                 return;
@@ -93,19 +108,19 @@ namespace OefeningenLogo.UI.CreateExercise
             if (!IsValid())
                 return;
 
-            _exercise = new ExerciseDefinition(_exerciseName, new ExerciseTemplate(_exerciseTemplate));
+            var exercise = new ExerciseDefinition(_exerciseName, new ExerciseTemplate(_exerciseTemplate));
 
             foreach (var number in _numbers)
             {
-                _exercise.AddNumberDefinition(number);
+                exercise.AddNumberDefinition(number);
             }
 
             foreach (var constraint in _constraints)
             {
-                _exercise.AddConstraint(constraint);
+                exercise.AddConstraint(constraint);
             }
 
-            _repository.SaveExercise(_exercise);
+            _repository.SaveExercise(exercise);
 
             CloseWindow();
         }

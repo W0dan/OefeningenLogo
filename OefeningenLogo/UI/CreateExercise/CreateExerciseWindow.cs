@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
+using OefeningenLogo.UI.CreateExercise.AddNumber;
 using OefeningenLogo.UI.Extensions;
 
 namespace OefeningenLogo.UI.CreateExercise
@@ -18,34 +20,49 @@ namespace OefeningenLogo.UI.CreateExercise
             InitializeComponent();
         }
 
+        public void ShowDialog(IWindow parent)
+        {
+            base.ShowDialog(parent);
+        }
+
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => CancelButtonClicked());
+            CancelButtonClicked.Raise();
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => SaveButtonClicked());
+            SaveButtonClicked.Raise();
         }
 
         private void NameTextbox_TextChanged(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => NameChanged(NameTextbox.Text));
+            NameChanged.Raise(NameTextbox.Text);
         }
 
         private void TemplateTextbox_TextChanged(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => TemplateChanged(TemplateTextbox.Text));
+            TemplateChanged.Raise(TemplateTextbox.Text);
         }
 
         private void AddNumberButton_Click(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => AddNumberButtonClicked());
+            AddNumberButtonClicked.Raise();
         }
 
         private void AddConstraintButton_Click(object sender, EventArgs e)
         {
-            this.RaiseEvent(() => AddConstraintButtonClicked());
+            AddConstraintButtonClicked.Raise();
+        }
+
+        public void Clear()
+        {
+            NameTextbox.Text = string.Empty;
+            NameTextbox.BackColor = Color.White;
+            TemplateTextbox.Text = string.Empty;
+            TemplateTextbox.BackColor = Color.White;
+            NumbersListview.Items.Clear();
+            ConstraintsListview.Items.Clear();
         }
 
         public void AddNumber(string number)

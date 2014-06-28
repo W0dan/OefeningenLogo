@@ -1,9 +1,8 @@
 using System;
-using System.Windows.Forms;
 
 namespace OefeningenLogo.UI.CreateExercise.AddNumber
 {
-    public interface IAddNumberWindow : IWin32Window
+    public interface IAddNumberWindow : IWindow
     {
         void Close();
         void DecimalsValid(bool valid);

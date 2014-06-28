@@ -1,6 +1,6 @@
 namespace OefeningenLogo.Oefeningen
 {
-    public interface IAmADefinitionOfANumber
+    public interface INumberDefinition
     {
         decimal GetNumber(IProvideRandomNumbers randomNumberGenerator);
         string Name { get; }

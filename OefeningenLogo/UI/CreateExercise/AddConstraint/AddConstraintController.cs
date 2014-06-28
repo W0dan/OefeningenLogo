@@ -1,26 +1,25 @@
 ﻿using OefeningenLogo.Backend;
 using OefeningenLogo.Oefeningen;
+using OefeningenLogo.UI.CreateExercise.AddNumber;
 
 namespace OefeningenLogo.UI.CreateExercise.AddConstraint
 {
-    public class AddConstraintController
+    public class AddConstraintController:IController, IAddConstraintController
     {
-        private readonly AddConstraintWindow _window;
+        private readonly IAddConstraintWindow _window;
         private readonly IRepository _repository;
-        private IAmAConstraint _constraint;
+        private IConstraint _constraint;
 
-        private AddConstraintController(AddConstraintWindow window, IRepository repository)
+        public AddConstraintController(IAddConstraintWindow window, IRepository repository)
         {
             _window = window;
             _repository = repository;
         }
 
-        public static IAmAConstraint ShowWindow(ICreateExerciseWindow parent, IRepository repository)
+        public IConstraint ShowWindow(IWindow parent)
         {
-            var window = new AddConstraintWindow();
-            var result = new AddConstraintController(window, repository);
-            window.ShowDialog(parent);
-            return result._constraint;
+            _window.ShowDialog(parent);
+            return _constraint;
         }
     }
 }

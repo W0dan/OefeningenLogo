@@ -24,6 +24,6 @@ namespace OefeningenLogoTest.Oefeningen.Given_a_definition_of_a_number2
             get { return 0; }
         }
 
-        public IAmADefinitionOfANumber NumberDefinition { get; set; }
+        public INumberDefinition NumberDefinition { get; set; }
     }
 }

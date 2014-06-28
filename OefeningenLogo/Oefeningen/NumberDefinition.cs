@@ -2,7 +2,7 @@ using System;
 
 namespace OefeningenLogo.Oefeningen
 {
-    public class NumberDefinition : IAmADefinitionOfANumber
+    public class NumberDefinition : INumberDefinition
     {
         public string Name { get; private set; }
         public int Decimals { get; private set; }
