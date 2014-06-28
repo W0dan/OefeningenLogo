@@ -10,7 +10,7 @@ namespace OefeningenLogo.UI
         private readonly IExerciseBuilderWindow _window;
         private readonly IRepository _repository;
         private readonly ICreateExerciseController _createExerciseController;
-        private IEnumerable<IExerciseDefinition> _exercises = new List<IExerciseDefinition>();
+        private List<string> _exercises;
         private ExerciseSheet _sheet;
 
         public ExerciseBuilderController(IExerciseBuilderWindow window, IRepository repository, ICreateExerciseController createExerciseController)
@@ -22,7 +22,7 @@ namespace OefeningenLogo.UI
 
         public IExerciseSheet ShowWindow(IExerciseSheetWindow parent)
         {
-            _exercises = new List<IExerciseDefinition>();
+            _exercises = new List<string>();
             _sheet = null;
 
             _window.Loaded += Loaded;
@@ -49,6 +49,7 @@ namespace OefeningenLogo.UI
 
         void ExerciseSelected(string exerciseName)
         {
+            _exercises.Add(exerciseName);
             _window.AddExercise(exerciseName);
         }
 

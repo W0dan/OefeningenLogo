@@ -10,7 +10,7 @@ namespace OefeningenLogo.Backend
         public static IConstraint BuildConstraint(string value)
         {
             var definition =
-                string.Format(@"public class Constraint : OefeningenLogo.Oefeningen.IAmAConstraint
+                string.Format(@"public class Constraint : OefeningenLogo.Oefeningen.IConstraint
 {{
     public bool IsValid(params decimal[] numbers)
     {{

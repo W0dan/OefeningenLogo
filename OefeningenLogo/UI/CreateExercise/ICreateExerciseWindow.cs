@@ -10,6 +10,7 @@ namespace OefeningenLogo.UI.CreateExercise
         void NameValid(bool valid);
         void TemplateValid(bool valid);
         void ValidationIssuesPresent();
+        void Message(string message);
         event Action SaveButtonClicked;
         event Action CancelButtonClicked;
         event Action AddNumberButtonClicked;

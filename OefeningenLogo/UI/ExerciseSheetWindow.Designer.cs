@@ -42,6 +42,8 @@
             this.ExerciseSheetListview.Size = new System.Drawing.Size(713, 532);
             this.ExerciseSheetListview.TabIndex = 0;
             this.ExerciseSheetListview.UseCompatibleStateImageBehavior = false;
+            this.ExerciseSheetListview.View = System.Windows.Forms.View.List;
+            this.ExerciseSheetListview.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ExerciseSheetListview_MouseDoubleClick);
             // 
             // CreateNewExerciseSheetButton
             // 
@@ -50,7 +52,7 @@
             this.CreateNewExerciseSheetButton.Name = "CreateNewExerciseSheetButton";
             this.CreateNewExerciseSheetButton.Size = new System.Drawing.Size(240, 23);
             this.CreateNewExerciseSheetButton.TabIndex = 1;
-            this.CreateNewExerciseSheetButton.Text = "&Maak nieuw oefeningenblad";
+            this.CreateNewExerciseSheetButton.Text = "&Ontwerp nieuw oefeningenblad";
             this.CreateNewExerciseSheetButton.UseVisualStyleBackColor = true;
             this.CreateNewExerciseSheetButton.Click += new System.EventHandler(this.CreateNewExerciseSheetButton_Click);
             // 

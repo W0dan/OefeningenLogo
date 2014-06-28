@@ -183,7 +183,7 @@
             this.MinimizeBox = false;
             this.Name = "CreateExerciseWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Maak een oefening";
+            this.Text = "Oefening ontwerpen";
             this.ResumeLayout(false);
             this.PerformLayout();
 

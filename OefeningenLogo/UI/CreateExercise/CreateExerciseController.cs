@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using OefeningenLogo.Backend;
 using OefeningenLogo.Oefeningen;
 using OefeningenLogo.UI.CreateExercise.AddConstraint;
@@ -120,7 +121,15 @@ namespace OefeningenLogo.UI.CreateExercise
                 exercise.AddConstraint(constraint);
             }
 
-            _repository.SaveExercise(exercise);
+            try
+            {
+                _repository.SaveExercise(exercise);
+            }
+            catch (Exception e)
+            {
+                _window.Message(e.Message);
+                return;
+            }
 
             CloseWindow();
         }

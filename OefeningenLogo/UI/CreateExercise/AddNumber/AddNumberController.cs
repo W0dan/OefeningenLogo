@@ -1,5 +1,4 @@
 ﻿using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using OefeningenLogo.Oefeningen;
 
 namespace OefeningenLogo.UI.CreateExercise.AddNumber
@@ -24,13 +23,31 @@ namespace OefeningenLogo.UI.CreateExercise.AddNumber
 
         public INumberDefinition ShowWindow(IWindow parent)
         {
+            _name = string.Empty;
+            _decimals = 0;
+            _minvalue = 0;
+            _maxvalue = 0;
+            _decimalsValid = false;
+            _minvalueValid = false;
+            _maxvalueValid = false;
+            _nameValid = false;
+
             _window.SaveButtonClicked += SaveButtonClicked;
             _window.CancelButtonClicked += CancelButtonClicked;
             _window.NameChanged += NameChanged;
             _window.MinvalueChanged += MinvalueChanged;
             _window.MaxvalueChanged += MaxvalueChanged;
             _window.DecimalsChanged += DecimalsChanged;
+
             _window.ShowDialog(parent);
+
+            _window.SaveButtonClicked -= SaveButtonClicked;
+            _window.CancelButtonClicked -= CancelButtonClicked;
+            _window.NameChanged -= NameChanged;
+            _window.MinvalueChanged -= MinvalueChanged;
+            _window.MaxvalueChanged -= MaxvalueChanged;
+            _window.DecimalsChanged -= DecimalsChanged;
+
             return _number;
         }
 

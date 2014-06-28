@@ -11,6 +11,7 @@ namespace OefeningenLogo.UI
     {
         public event Action AddExerciseSheetButtonClicked;
         public event Action Loaded;
+        public event Action<string> ExerciseSheetSelected;
 
         public ExerciseSheetWindow()
         {
@@ -32,12 +33,22 @@ namespace OefeningenLogo.UI
             Loaded.Raise();
         }
 
-        public void ReloadExerciseSheets(IEnumerable<ExerciseSheet> exerciseSheets)
+        public void ReloadExerciseSheets(IEnumerable<IExerciseSheet> exerciseSheets)
         {
             foreach (var exerciseSheet in exerciseSheets)
             {
-                ExerciseSheetListview.Items.Add(exerciseSheet.ToString());
+                ExerciseSheetListview.Items.Add(exerciseSheet.Name);
             }
+        }
+
+        private void ExerciseSheetListview_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            var hit = ExerciseSheetListview.HitTest(e.Location);
+
+            if (hit.Item == null)
+                return;
+
+            ExerciseSheetSelected.Raise((string)hit.Item.Text);
         }
     }
 }

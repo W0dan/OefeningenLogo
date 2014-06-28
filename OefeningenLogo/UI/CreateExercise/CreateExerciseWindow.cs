@@ -55,6 +55,11 @@ namespace OefeningenLogo.UI.CreateExercise
             AddConstraintButtonClicked.Raise();
         }
 
+        public void Message(string message)
+        {
+            MessageBox.Show(message,"fout", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+        }
+
         public void Clear()
         {
             NameTextbox.Text = string.Empty;
