@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.CSharp;
+using OefeningenLogo.Backend;
 using OefeningenLogo.Oefeningen;
 
 namespace OefeningenLogo

@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using OefeningenLogo.Backend;
 using OefeningenLogo.Oefeningen;
-using OefeningenLogo.UI.CreateExercise;
+using OefeningenLogo.UI.CreateExerciseSheet.CreateExercise;
 
-namespace OefeningenLogo.UI
+namespace OefeningenLogo.UI.CreateExerciseSheet
 {
     public class ExerciseBuilderController : IExerciseBuilderController
     {

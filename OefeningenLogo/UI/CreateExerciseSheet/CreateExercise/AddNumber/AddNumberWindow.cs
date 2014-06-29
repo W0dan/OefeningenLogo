@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using OefeningenLogo.UI.Extensions;
 
-namespace OefeningenLogo.UI.CreateExercise.AddNumber
+namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber
 {
     public partial class AddNumberWindow : Form, IAddNumberWindow
     {

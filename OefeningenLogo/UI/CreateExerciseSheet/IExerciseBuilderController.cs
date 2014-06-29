@@ -1,6 +1,6 @@
 using OefeningenLogo.Oefeningen;
 
-namespace OefeningenLogo.UI
+namespace OefeningenLogo.UI.CreateExerciseSheet
 {
     public interface IExerciseBuilderController : IController
     {

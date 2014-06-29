@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OefeningenLogo
+namespace OefeningenLogo.Backend
 {
     public interface IGeneratePdfs
     {

@@ -4,7 +4,7 @@ using System.IO;
 using PdfCraft.API;
 using PdfCraft.Fonts;
 
-namespace OefeningenLogo
+namespace OefeningenLogo.Backend
 {
     public class PdfGenerator : IGeneratePdfs
     {

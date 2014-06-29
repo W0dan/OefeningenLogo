@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace OefeningenLogo.UI.CreateExercise.AddConstraint.CreateConstraint
+namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddConstraint.CreateConstraint
 {
     public partial class CreateConstraintWindow : Form
     {

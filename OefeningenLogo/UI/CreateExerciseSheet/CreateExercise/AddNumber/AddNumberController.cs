@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using OefeningenLogo.Oefeningen;
 
-namespace OefeningenLogo.UI.CreateExercise.AddNumber
+namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber
 {
     public class AddNumberController : IAddNumberController
     {

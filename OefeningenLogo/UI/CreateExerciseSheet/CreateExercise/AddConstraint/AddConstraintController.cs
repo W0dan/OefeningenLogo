@@ -1,8 +1,8 @@
 ﻿using OefeningenLogo.Backend;
 using OefeningenLogo.Oefeningen;
-using OefeningenLogo.UI.CreateExercise.AddNumber;
+using OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber;
 
-namespace OefeningenLogo.UI.CreateExercise.AddConstraint
+namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddConstraint
 {
     public class AddConstraintController:IController, IAddConstraintController
     {
@@ -18,8 +18,24 @@ namespace OefeningenLogo.UI.CreateExercise.AddConstraint
 
         public IConstraint ShowWindow(IWindow parent)
         {
+            _window.Loaded += Loaded;
+            
             _window.ShowDialog(parent);
+
+            _window.Loaded -= Loaded;
+
             return _constraint;
+        }
+
+        void Loaded()
+        {
+            Reload();
+        }
+
+        private void Reload()
+        {
+            var constraints = _repository.GetAllConstraints();
+            _window.ReloadConstraints(constraints);
         }
     }
 }

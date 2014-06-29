@@ -1,6 +1,6 @@
 using OefeningenLogo.Oefeningen;
 
-namespace OefeningenLogo.UI.CreateExercise.AddNumber
+namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber
 {
     public interface IAddNumberController : IController
     {

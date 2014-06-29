@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using OefeningenLogo.Oefeningen;
-using OefeningenLogo.UI.CreateExercise.AddNumber;
+using OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber;
 using OefeningenLogo.UI.Extensions;
 
-namespace OefeningenLogo.UI
+namespace OefeningenLogo.UI.CreateExerciseSheet
 {
     public partial class ExerciseBuilderWindow : Form, IExerciseBuilderWindow
     {

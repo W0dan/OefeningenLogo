@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Moq;
 using OefeningenLogo;
+using OefeningenLogo.Backend;
 using Xunit;
 
 namespace OefeningenLogoTest

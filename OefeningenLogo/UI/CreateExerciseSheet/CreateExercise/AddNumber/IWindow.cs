@@ -1,6 +1,6 @@
 using System.Windows.Forms;
 
-namespace OefeningenLogo.UI.CreateExercise.AddNumber
+namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber
 {
     public interface IWindow : IWin32Window
     {

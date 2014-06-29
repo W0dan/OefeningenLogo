@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using OefeningenLogo.UI.CreateExercise.AddNumber;
+using OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber;
 using OefeningenLogo.UI.Extensions;
 
-namespace OefeningenLogo.UI.CreateExercise
+namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise
 {
     public partial class CreateExerciseWindow : Form, ICreateExerciseWindow
     {

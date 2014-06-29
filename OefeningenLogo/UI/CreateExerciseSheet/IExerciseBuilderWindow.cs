@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using OefeningenLogo.Oefeningen;
-using OefeningenLogo.UI.CreateExercise.AddNumber;
+using OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber;
 
-namespace OefeningenLogo.UI
+namespace OefeningenLogo.UI.CreateExerciseSheet
 {
     public interface IExerciseBuilderWindow : IWindow
     {

@@ -1,4 +1,4 @@
-﻿namespace OefeningenLogo.UI.CreateExercise
+﻿namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise
 {
     partial class CreateExerciseWindow
     {

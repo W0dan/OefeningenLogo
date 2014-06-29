@@ -1,4 +1,4 @@
-﻿namespace OefeningenLogo.UI.CreateExercise.AddConstraint.CreateConstraint
+﻿namespace OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddConstraint.CreateConstraint
 {
     partial class CreateConstraintWindow
     {

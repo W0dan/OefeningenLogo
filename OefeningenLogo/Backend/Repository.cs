@@ -194,8 +194,9 @@ namespace OefeningenLogo.Backend
             {
                 var name = constraintXml.Attribute("name").Value;
                 var value = constraintXml.Attribute("value").Value;
+                var description = constraintXml.Attribute("description").Value;
 
-                constraints.Add(name, ConstraintBuilder.BuildConstraint(value));
+                constraints.Add(name, ConstraintBuilder.BuildConstraint(value, description));
             }
 
             return constraints;

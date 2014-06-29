@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace OefeningenLogo.Oefeningen
@@ -37,9 +38,14 @@ namespace OefeningenLogo.Oefeningen
         public string CreateExercise(IProvideRandomNumbers randomNumberGenerator)
         {
             var numbers = _numberDefinitions.Select(n => n.GetNumber(randomNumberGenerator)).ToArray();
+            var invalidConstraintCount = 0;
             while (!ConstraintsAreValid(numbers))
             {
+                if (invalidConstraintCount > 100)
+                    throw new CannotSatisfyConstraintException("Het is onmogelijk om getallen te maken waarvoor de regel klopt (in 100 pogingen)");
+
                 numbers = _numberDefinitions.Select(n => n.GetNumber(randomNumberGenerator)).ToArray();
+                invalidConstraintCount++;
             }
 
             return string.Format(

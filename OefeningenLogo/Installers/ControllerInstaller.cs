@@ -2,8 +2,9 @@
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 using OefeningenLogo.Backend;
+using OefeningenLogo.Oefeningen;
 using OefeningenLogo.UI;
-using OefeningenLogo.UI.CreateExercise.AddNumber;
+using OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber;
 
 namespace OefeningenLogo.Installers
 {
@@ -22,6 +23,10 @@ namespace OefeningenLogo.Installers
                     .LifestyleSingleton())
                 .Register(Classes.FromThisAssembly()
                     .BasedOn<IWindow>()
+                    .WithServiceAllInterfaces()
+                    .LifestyleTransient())
+                .Register(Classes.FromThisAssembly()
+                    .BasedOn<IProvideRandomNumbers>()
                     .WithServiceAllInterfaces()
                     .LifestyleTransient())
                 ;

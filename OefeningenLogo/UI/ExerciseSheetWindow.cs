@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 using OefeningenLogo.Oefeningen;
-using OefeningenLogo.UI.CreateExercise.AddNumber;
+using OefeningenLogo.UI.CreateExerciseSheet.CreateExercise.AddNumber;
 using OefeningenLogo.UI.Extensions;
 
 namespace OefeningenLogo.UI
