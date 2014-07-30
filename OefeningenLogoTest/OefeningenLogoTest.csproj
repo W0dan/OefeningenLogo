@@ -68,7 +68,6 @@
     <Compile Include="Oefeningen\Given_a_definition_of_a_number1\And_a_random_number_provider\AndARandomNumberProvider.cs" />
     <Compile Include="Oefeningen\Given_a_definition_of_a_number1\And_a_random_number_provider\When_GetNumber_is_called.cs" />
     <Compile Include="Oefeningen\Given_a_definition_of_a_number1\GivenADefinitionOfANumber.cs" />
-    <Compile Include="When_I_ask_to_generate_a_sheet_of_oefeningen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

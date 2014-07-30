@@ -17,16 +17,15 @@ namespace OefeningenLogo
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            //bootstrapping windsor
             var container = new WindsorContainer();
-
             container.Install(FromAssembly.This());
+            var navController = container.Resolve<INavigationController>();
 
-            var rootController = container.Resolve<IRootController>();
-            Application.Run(rootController.Window);
+            Application.Run(navController.GetStartupWindow());
 
             container.Dispose();
 
-            //Application.Run(new MaakOefeningen());
         }
     }
 }

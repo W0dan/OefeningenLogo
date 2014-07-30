@@ -1,5 +1,6 @@
 ﻿using Moq;
 using OefeningenLogo.Oefeningen;
+using OefeningenLogo.Service;
 
 namespace OefeningenLogoTest.Oefeningen.Given_a_definition_of_a_number1.And_a_random_number_provider
 {

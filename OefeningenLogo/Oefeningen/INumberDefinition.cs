@@ -1,3 +1,5 @@
+using OefeningenLogo.Service;
+
 namespace OefeningenLogo.Oefeningen
 {
     public interface INumberDefinition

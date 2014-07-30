@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Moq;
 using OefeningenLogo.Oefeningen;
+using OefeningenLogo.Service;
 using OefeningenLogoTest.Extensions;
 
 namespace OefeningenLogoTest.Oefeningen.Given_a_definition_for_an_exercise1.And_two_definitions_of_a_number2

@@ -1,5 +1,6 @@
 ﻿using Moq;
 using OefeningenLogo.Oefeningen;
+using OefeningenLogo.Service;
 using Xunit;
 
 namespace OefeningenLogoTest.Oefeningen.Given_a_definition_for_an_exercise2.And_one_definition_of_a_number

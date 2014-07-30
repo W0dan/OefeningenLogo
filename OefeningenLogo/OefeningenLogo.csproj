@@ -46,6 +46,7 @@
       <HintPath>..\packages\PdfCraft\PdfCraft.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,27 +58,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Backend\ConstraintBuilder.cs" />
+    <Compile Include="Installers\ServiceInstaller.cs" />
+    <Compile Include="Installers\QueryInstaller.cs" />
+    <Compile Include="Installers\HandlerInstaller.cs" />
+    <Compile Include="Installers\RepositoryInstaller.cs" />
+    <Compile Include="Service\ConstraintBuilder.cs" />
+    <Compile Include="ConfigSettings.cs" />
     <Compile Include="Installers\ControllerInstaller.cs" />
     <Compile Include="Oefeningen\CannotSatisfyConstraintException.cs" />
     <Compile Include="Oefeningen\IExerciseSheet.cs" />
-    <Compile Include="Backend\XmlHelper.cs" />
-    <Compile Include="Backend\IRepository.cs" />
-    <Compile Include="Backend\Repository.cs" />
-    <Compile Include="ExpressionExecutor.cs" />
-    <Compile Include="GetalDefinitie.cs" />
-    <Compile Include="GetalSet.cs" />
-    <Compile Include="GetalSetDefinitie.cs" />
-    <Compile Include="Backend\IGeneratePdfs.cs" />
-    <Compile Include="MaakOefeningen.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MaakOefeningen.Designer.cs">
-      <DependentUpon>MaakOefeningen.cs</DependentUpon>
-    </Compile>
-    <Compile Include="OefeningenDefinitieSet.cs" />
-    <Compile Include="OefeningenGenerator.cs" />
-    <Compile Include="OefeningenProvider.cs" />
+    <Compile Include="Service\Handlers\CreateExerciseSheet\CreateExerciseSheetHandler.cs" />
+    <Compile Include="Service\Handlers\CreateExerciseSheet\ICreateExerciseSheetHandler.cs" />
+    <Compile Include="Service\Handlers\GetAllConstraints\GetAllConstraintsHandler.cs" />
+    <Compile Include="Service\Handlers\GetAllConstraints\IGetAllConstraintsHandler.cs" />
+    <Compile Include="Service\Handlers\GetAllExercises\GetAllExercisesHandler.cs" />
+    <Compile Include="Service\Handlers\GetAllExercises\IGetAllExercisesHandler.cs" />
+    <Compile Include="Service\Handlers\GetAllSheets\GetAllSheetsHandler.cs" />
+    <Compile Include="Service\Handlers\GetAllSheets\IGetAllSheetsHandler.cs" />
+    <Compile Include="Service\Handlers\GetExercise\GetExerciseHandler.cs" />
+    <Compile Include="Service\Handlers\GetExercise\GetExerciseQuery.cs" />
+    <Compile Include="Service\Handlers\GetExercise\IGetExerciseHandler.cs" />
+    <Compile Include="Service\Handlers\GetExercise\IGetExerciseQuery.cs" />
+    <Compile Include="Service\IHandler.cs" />
+    <Compile Include="Service\IQuery.cs" />
+    <Compile Include="Service\XmlHelper.cs" />
+    <Compile Include="Service\IRepository.cs" />
+    <Compile Include="Service\Repository.cs" />
+    <Compile Include="Service\IGeneratePdfs.cs" />
     <Compile Include="Oefeningen\ExerciseDefinition.cs" />
     <Compile Include="Oefeningen\ExerciseGenerator.cs" />
     <Compile Include="Oefeningen\ExerciseSheet.cs" />
@@ -86,70 +93,69 @@
     <Compile Include="Oefeningen\IExerciseDefinition.cs" />
     <Compile Include="Oefeningen\INumberDefinition.cs" />
     <Compile Include="Oefeningen\IExerciseTemplate.cs" />
-    <Compile Include="Oefeningen\IProvideRandomNumbers.cs" />
+    <Compile Include="Service\IProvideRandomNumbers.cs" />
     <Compile Include="Oefeningen\NumberDefinition.cs" />
-    <Compile Include="Oefeningen\RandomNumberGenerator.cs" />
-    <Compile Include="Backend\PdfGenerator.cs" />
+    <Compile Include="Service\RandomNumberGenerator.cs" />
+    <Compile Include="Service\PdfGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\AddConstraintController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\AddConstraintWindow.cs">
+    <Compile Include="UI\AddConstraint\AddConstraintController.cs" />
+    <Compile Include="UI\AddConstraint\AddConstraintWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\AddConstraintWindow.Designer.cs">
+    <Compile Include="UI\AddConstraint\AddConstraintWindow.Designer.cs">
       <DependentUpon>AddConstraintWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\CreateConstraint\CreateConstraintWindow.cs">
+    <Compile Include="UI\CreateConstraint\CreateConstraintWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\CreateConstraint\CreateConstraintWindow.Designer.cs">
+    <Compile Include="UI\CreateConstraint\CreateConstraintWindow.Designer.cs">
       <DependentUpon>CreateConstraintWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\IAddConstraintController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\IAddConstraintWindow.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddNumber\AddNumberController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddNumber\AddNumberWindow.cs">
+    <Compile Include="UI\AddConstraint\IAddConstraintController.cs" />
+    <Compile Include="UI\AddConstraint\IAddConstraintWindow.cs" />
+    <Compile Include="UI\AddNumber\AddNumberController.cs" />
+    <Compile Include="UI\AddNumber\AddNumberWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddNumber\AddNumberWindow.Designer.cs">
+    <Compile Include="UI\AddNumber\AddNumberWindow.Designer.cs">
       <DependentUpon>AddNumberWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddNumber\IAddNumberController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddNumber\IAddNumberWindow.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\AddNumber\IWindow.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\CreateExerciseController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\CreateExerciseWindow.cs">
+    <Compile Include="UI\AddNumber\IAddNumberController.cs" />
+    <Compile Include="UI\AddNumber\IAddNumberWindow.cs" />
+    <Compile Include="UI\CreateExercise\CreateExerciseController.cs" />
+    <Compile Include="UI\CreateExercise\CreateExerciseWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\CreateExerciseWindow.Designer.cs">
+    <Compile Include="UI\CreateExercise\CreateExerciseWindow.Designer.cs">
       <DependentUpon>CreateExerciseWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\ICreateExerciseController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\CreateExercise\ICreateExerciseWindow.cs" />
-    <Compile Include="UI\Extensions\ListviewExtensions.cs" />
+    <Compile Include="UI\CreateExercise\ICreateExerciseController.cs" />
+    <Compile Include="UI\CreateExercise\ICreateExerciseWindow.cs" />
+    <Compile Include="UI\IWindow.cs" />
+    <Compile Include="UI\_Extensions\ListviewExtensions.cs" />
     <Compile Include="UI\IController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\ExerciseBuilderWindow.cs">
+    <Compile Include="UI\CreateExerciseSheet\CreateExerciseSheetWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\ExerciseBuilderWindow.Designer.cs">
-      <DependentUpon>ExerciseBuilderWindow.cs</DependentUpon>
+    <Compile Include="UI\CreateExerciseSheet\CreateExerciseSheetWindow.Designer.cs">
+      <DependentUpon>CreateExerciseSheetWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\CreateExerciseSheet\ExerciseBuilderController.cs" />
-    <Compile Include="UI\ExerciseSheetController.cs" />
-    <Compile Include="UI\ExerciseSheetWindow.cs">
+    <Compile Include="UI\CreateExerciseSheet\CreateExerciseSheetController.cs" />
+    <Compile Include="UI\ExerciseSheetsOverview\ExerciseSheetsController.cs" />
+    <Compile Include="UI\ExerciseSheetsOverview\ExerciseSheetsWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\ExerciseSheetWindow.Designer.cs">
-      <DependentUpon>ExerciseSheetWindow.cs</DependentUpon>
+    <Compile Include="UI\ExerciseSheetsOverview\ExerciseSheetsWindow.Designer.cs">
+      <DependentUpon>ExerciseSheetsWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\Extensions\FormExtensions.cs" />
-    <Compile Include="UI\CreateExerciseSheet\IExerciseBuilderController.cs" />
-    <Compile Include="UI\CreateExerciseSheet\IExerciseBuilderWindow.cs" />
-    <Compile Include="UI\IExerciseSheetWindow.cs" />
-    <Compile Include="UI\IRootController.cs" />
-    <EmbeddedResource Include="MaakOefeningen.resx">
-      <DependentUpon>MaakOefeningen.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="UI\_Extensions\FormExtensions.cs" />
+    <Compile Include="UI\CreateExerciseSheet\ICreateExerciseSheetController.cs" />
+    <Compile Include="UI\CreateExerciseSheet\ICreateExerciseSheetWindow.cs" />
+    <Compile Include="UI\ExerciseSheetsOverview\IExerciseSheetsWindow.cs" />
+    <Compile Include="UI\INavigationController.cs" />
+    <Compile Include="UI\ExerciseSheetsOverview\IExerciseSheetsController.cs" />
+    <Compile Include="UI\NavigationController.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -160,23 +166,23 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\AddConstraintWindow.resx">
+    <EmbeddedResource Include="UI\CreateExerciseSheet\CreateExerciseSheetWindow.resx">
+      <DependentUpon>CreateExerciseSheetWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\AddConstraint\AddConstraintWindow.resx">
       <DependentUpon>AddConstraintWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreateExerciseSheet\CreateExercise\AddConstraint\CreateConstraint\CreateConstraintWindow.resx">
+    <EmbeddedResource Include="UI\CreateConstraint\CreateConstraintWindow.resx">
       <DependentUpon>CreateConstraintWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreateExerciseSheet\CreateExercise\AddNumber\AddNumberWindow.resx">
+    <EmbeddedResource Include="UI\AddNumber\AddNumberWindow.resx">
       <DependentUpon>AddNumberWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreateExerciseSheet\CreateExercise\CreateExerciseWindow.resx">
+    <EmbeddedResource Include="UI\CreateExercise\CreateExerciseWindow.resx">
       <DependentUpon>CreateExerciseWindow.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\CreateExerciseSheet\ExerciseBuilderWindow.resx">
-      <DependentUpon>ExerciseBuilderWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\ExerciseSheetWindow.resx">
-      <DependentUpon>ExerciseSheetWindow.cs</DependentUpon>
+    <EmbeddedResource Include="UI\ExerciseSheetsOverview\ExerciseSheetsWindow.resx">
+      <DependentUpon>ExerciseSheetsWindow.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />
