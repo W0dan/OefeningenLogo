@@ -10,9 +10,12 @@ namespace OefeningenLogo.UI.CreateExerciseSheet
         void AddExercise(string exerciseName);
         void RemoveExercise(string exerciseName);
         void Clear();
+        void Close();
         event Action Loaded;
         event Action AddExerciseButtonClicked;
         event Action<string> ExerciseSelected;
         event Action<string> ExerciseUnselected;
+        event Action CancelButtonClicked;
+        event Action SaveButtonClicked;
     }
 }

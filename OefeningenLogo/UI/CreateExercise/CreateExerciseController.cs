@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using OefeningenLogo.Oefeningen;
-using OefeningenLogo.Service;
-using OefeningenLogo.UI.AddConstraint;
-using OefeningenLogo.UI.AddNumber;
+using OefeningenLogo.Service.Handlers.SaveExercise;
+using OefeningenLogo.UI._Extensions;
 
 namespace OefeningenLogo.UI.CreateExercise
 {
     public class CreateExerciseController : ICreateExerciseController
     {
         private readonly ICreateExerciseWindow _window;
-        private readonly IRepository _repository;
-        private readonly IAddNumberController _addNumberController;
-        private readonly IAddConstraintController _addConstraintController;
+        private readonly ISaveExerciseHandler _saveExerciseHandler;
         private string _exerciseName;
         private string _exerciseTemplate;
         private List<INumberDefinition> _numbers = new List<INumberDefinition>();
@@ -20,13 +17,14 @@ namespace OefeningenLogo.UI.CreateExercise
         private bool _templateValid;
         private bool _nameValid;
 
-        public CreateExerciseController(ICreateExerciseWindow window, IRepository repository, IAddNumberController addNumberController, IAddConstraintController addConstraintController)
+        public event Func<IWindow, INumberDefinition> WantToAddNumber;
+        public event Func<IWindow, IConstraint> WantToAddConstraint;
+
+        public CreateExerciseController(ICreateExerciseWindow window, ISaveExerciseHandler saveExerciseHandler)
         {
 
             _window = window;
-            _repository = repository;
-            _addNumberController = addNumberController;
-            _addConstraintController = addConstraintController;
+            _saveExerciseHandler = saveExerciseHandler;
         }
 
         public void ShowWindow(IWindow parent)
@@ -79,7 +77,7 @@ namespace OefeningenLogo.UI.CreateExercise
 
         private void AddConstraintButtonClicked()
         {
-            var constraint = _addConstraintController.ShowWindow(_window);
+            var constraint = WantToAddConstraint.Raise(_window);
 
             if (constraint == null)
                 return;
@@ -90,7 +88,7 @@ namespace OefeningenLogo.UI.CreateExercise
 
         private void AddNumberButtonClicked()
         {
-            var number = _addNumberController.ShowWindow(_window);
+            var number = WantToAddNumber.Raise(_window);
 
             if (number == null)
                 return;
@@ -123,7 +121,7 @@ namespace OefeningenLogo.UI.CreateExercise
 
             try
             {
-                _repository.SaveExercise(exercise);
+                _saveExerciseHandler.SaveExercise(exercise);
             }
             catch (Exception e)
             {

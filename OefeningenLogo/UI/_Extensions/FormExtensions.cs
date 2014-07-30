@@ -18,6 +18,14 @@ namespace OefeningenLogo.UI._Extensions
                 @event(arg);
         }
 
+        public static TOut Raise<TIn, TOut>(this Func<TIn,TOut> @event, TIn arg)
+        {
+            if (@event != null)
+                return @event(arg);
+
+            return default(TOut);
+        }
+
         public static void SetValidState(this Control control, bool valid)
         {
             control.BackColor = valid ? Color.Green : Color.Red;

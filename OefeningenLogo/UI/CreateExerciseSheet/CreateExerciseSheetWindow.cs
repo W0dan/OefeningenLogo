@@ -13,6 +13,8 @@ namespace OefeningenLogo.UI.CreateExerciseSheet
         public event Action AddExerciseButtonClicked;
         public event Action<string> ExerciseSelected;
         public event Action<string> ExerciseUnselected;
+        public event Action CancelButtonClicked;
+        public event Action SaveButtonClicked;
 
         public CreateExerciseSheetWindow()
         {
@@ -52,6 +54,7 @@ namespace OefeningenLogo.UI.CreateExerciseSheet
         public void Clear()
         {
             ExerciseListview.Items.Clear();
+            ExerciseSheetListview.Items.Clear();
         }
         
         public void ShowDialog(IWindow parent)
@@ -90,7 +93,12 @@ namespace OefeningenLogo.UI.CreateExerciseSheet
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            SaveButtonClicked.Raise();
+        }
 
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            CancelButtonClicked.Raise();
         }
     }
 }

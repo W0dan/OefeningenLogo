@@ -131,8 +131,9 @@
             this.CancelButton.TabIndex = 12;
             this.CancelButton.Text = "&Annuleren";
             this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // ExerciseBuilderWindow
+            // CreateExerciseSheetWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -146,7 +147,7 @@
             this.Controls.Add(this.ExerciseSheetListview);
             this.Controls.Add(this.AddExerciseButton);
             this.Controls.Add(this.ExerciseListview);
-            this.Name = "ExerciseBuilderWindow";
+            this.Name = "CreateExerciseSheetWindow";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Oefeningenblad ontwerpen";
             this.Load += new System.EventHandler(this.ExerciseBuilderWindow_Load);

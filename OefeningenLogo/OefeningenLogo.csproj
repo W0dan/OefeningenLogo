@@ -79,6 +79,10 @@
     <Compile Include="Service\Handlers\GetExercise\GetExerciseQuery.cs" />
     <Compile Include="Service\Handlers\GetExercise\IGetExerciseHandler.cs" />
     <Compile Include="Service\Handlers\GetExercise\IGetExerciseQuery.cs" />
+    <Compile Include="Service\Handlers\SaveExerciseSheet\ISaveExerciseSheetHandler.cs" />
+    <Compile Include="Service\Handlers\SaveExerciseSheet\SaveExerciseSheetHandler.cs" />
+    <Compile Include="Service\Handlers\SaveExercise\ISaveExerciseHandler.cs" />
+    <Compile Include="Service\Handlers\SaveExercise\SaveExerciseHandler.cs" />
     <Compile Include="Service\IHandler.cs" />
     <Compile Include="Service\IQuery.cs" />
     <Compile Include="Service\XmlHelper.cs" />

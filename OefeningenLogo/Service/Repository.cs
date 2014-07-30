@@ -25,7 +25,7 @@ namespace OefeningenLogo.Service
             return _doc;
         }
 
-        private void Save()
+        public void Save()
         {
             if (_doc != null)
                 _doc.Save(XmlFilename);

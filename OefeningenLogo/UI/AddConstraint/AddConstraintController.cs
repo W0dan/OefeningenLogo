@@ -1,5 +1,4 @@
 ﻿using OefeningenLogo.Oefeningen;
-using OefeningenLogo.Service;
 using OefeningenLogo.Service.Handlers.GetAllConstraints;
 
 namespace OefeningenLogo.UI.AddConstraint
@@ -7,14 +6,12 @@ namespace OefeningenLogo.UI.AddConstraint
     public class AddConstraintController:IController, IAddConstraintController
     {
         private readonly IAddConstraintWindow _window;
-        private readonly IRepository _repository;
         private readonly IGetAllConstraintsHandler _getAllConstraintsHandler;
         private IConstraint _constraint;
 
-        public AddConstraintController(IAddConstraintWindow window, IRepository repository, IGetAllConstraintsHandler getAllConstraintsHandler )
+        public AddConstraintController(IAddConstraintWindow window, IGetAllConstraintsHandler getAllConstraintsHandler )
         {
             _window = window;
-            _repository = repository;
             _getAllConstraintsHandler = getAllConstraintsHandler;
         }
 
